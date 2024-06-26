@@ -580,7 +580,7 @@ class HumanSkeleton(
 
 		// Left thumb
 		updateFingerTransforms(
-			leftHandBone,
+			leftHandBone.getGlobalRotation(),
 			leftThumbProximalBone,
 			leftThumbIntermediateBone,
 			leftThumbDistalBone,
@@ -591,7 +591,7 @@ class HumanSkeleton(
 
 		// Left index
 		updateFingerTransforms(
-			leftHandBone,
+			leftHandBone.getGlobalRotation(),
 			leftIndexProximalBone,
 			leftIndexIntermediateBone,
 			leftIndexDistalBone,
@@ -602,7 +602,7 @@ class HumanSkeleton(
 
 		// Left middle
 		updateFingerTransforms(
-			leftHandBone,
+			leftHandBone.getGlobalRotation(),
 			leftMiddleProximalBone,
 			leftMiddleIntermediateBone,
 			leftMiddleDistalBone,
@@ -613,7 +613,7 @@ class HumanSkeleton(
 
 		// Left ring
 		updateFingerTransforms(
-			leftHandBone,
+			leftHandBone.getGlobalRotation(),
 			leftRingProximalBone,
 			leftRingIntermediateBone,
 			leftRingDistalBone,
@@ -624,7 +624,7 @@ class HumanSkeleton(
 
 		// Left little
 		updateFingerTransforms(
-			leftHandBone,
+			leftHandBone.getGlobalRotation(),
 			leftLittleProximalBone,
 			leftLittleIntermediateBone,
 			leftLittleDistalBone,
@@ -635,7 +635,7 @@ class HumanSkeleton(
 
 		// Right thumb
 		updateFingerTransforms(
-			rightHandBone,
+			rightHandBone.getGlobalRotation(),
 			rightThumbProximalBone,
 			rightThumbIntermediateBone,
 			rightThumbDistalBone,
@@ -646,7 +646,7 @@ class HumanSkeleton(
 
 		// Right index
 		updateFingerTransforms(
-			rightHandBone,
+			rightHandBone.getGlobalRotation(),
 			rightIndexProximalBone,
 			rightIndexIntermediateBone,
 			rightIndexDistalBone,
@@ -657,7 +657,7 @@ class HumanSkeleton(
 
 		// Right middle
 		updateFingerTransforms(
-			rightHandBone,
+			rightHandBone.getGlobalRotation(),
 			rightMiddleProximalBone,
 			rightMiddleIntermediateBone,
 			rightMiddleDistalBone,
@@ -668,7 +668,7 @@ class HumanSkeleton(
 
 		// Right ring
 		updateFingerTransforms(
-			rightHandBone,
+			rightHandBone.getGlobalRotation(),
 			rightRingProximalBone,
 			rightRingIntermediateBone,
 			rightRingDistalBone,
@@ -679,7 +679,7 @@ class HumanSkeleton(
 
 		// Right little
 		updateFingerTransforms(
-			rightHandBone,
+			rightHandBone.getGlobalRotation(),
 			rightLittleProximalBone,
 			rightLittleIntermediateBone,
 			rightLittleDistalBone,
@@ -1014,7 +1014,7 @@ class HumanSkeleton(
 	 * Update a finger's 3 bones' transforms
 	 */
 	private fun updateFingerTransforms(
-		handBone: Bone,
+		handRotation: Quaternion,
 		proximalBone: Bone,
 		intermediateBone: Bone,
 		distalBone: Bone,
@@ -1022,31 +1022,30 @@ class HumanSkeleton(
 		intermediateTracker: Tracker?,
 		distalTracker: Tracker?,
 	) {
-		// TODO: when using flex data, work off the handBone's rotation
 		if (distalTracker == null && intermediateTracker == null && proximalTracker == null) {
 			// Set fingers' rotations to the hand's if no finger tracker
-			proximalBone.setRotation(handBone.getGlobalRotation())
-			intermediateBone.setRotation(handBone.getGlobalRotation())
-			distalBone.setRotation(handBone.getGlobalRotation())
+			proximalBone.setRotation(handRotation)
+			intermediateBone.setRotation(handRotation)
+			distalBone.setRotation(handRotation)
 		}
 
-		// TODO allow up to 270-90 degrees of bending instead of 180-180 and fine tune interpolation values
+		// Note: we use interpQ instead of interpR in order to slerp over 180 degrees.
 		// Start of finger
 		proximalTracker?.let {
 			proximalBone.setRotation(it.getRotation())
-			if (intermediateTracker == null) intermediateBone.setRotation(IDENTITY.interpR(it.getRotation(), 1.25f))
-			if (distalTracker == null) distalBone.setRotation(IDENTITY.interpR(it.getRotation(), 1.5f))
+			if (intermediateTracker == null) intermediateBone.setRotation(handRotation.interpQ(it.getRotation(), 2.12f))
+			if (distalTracker == null) distalBone.setRotation(handRotation.interpQ(it.getRotation(), 3.03f))
 		}
 		// Middle of finger
 		intermediateTracker?.let {
-			if (proximalTracker == null) proximalBone.setRotation(IDENTITY.interpR(it.getRotation(), 0.5f))
+			if (proximalTracker == null) proximalBone.setRotation(handRotation.interpQ(it.getRotation(), 0.47f))
 			intermediateBone.setRotation(it.getRotation())
-			if (distalTracker == null) distalBone.setRotation(IDENTITY.interpR(it.getRotation(), 1.25f))
+			if (distalTracker == null) distalBone.setRotation(handRotation.interpQ(it.getRotation(), 1.43f))
 		}
 		// Tip of finger
 		distalTracker?.let {
-			if (proximalTracker == null) proximalBone.setRotation(IDENTITY.interpQ(it.getRotation(), 0.4f))
-			if (intermediateTracker == null) intermediateBone.setRotation(IDENTITY.interpQ(it.getRotation(), 0.6f))
+			if (proximalTracker == null && intermediateTracker == null) proximalBone.setRotation(handRotation.interpQ(it.getRotation(), 0.33f))
+			if (intermediateTracker == null) intermediateBone.setRotation(handRotation.interpQ(it.getRotation(), 0.7f))
 			distalBone.setRotation(it.getRotation())
 		}
 	}
