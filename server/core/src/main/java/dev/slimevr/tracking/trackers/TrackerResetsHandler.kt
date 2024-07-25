@@ -207,6 +207,11 @@ class TrackerResetsHandler(val tracker: Tracker) {
 	 * 0). This allows the tracker to be strapped to body at any pitch and roll.
 	 */
 	fun resetFull(reference: Quaternion) {
+		if (tracker.trackerDataSupport == TrackerDataSupport.FLEX_RESISTANCE) {
+			tracker.trackerFlexHandler.resetMin()
+			return
+		}
+
 		// Adjust for T-Pose (down)
 		tposeDownFix = if (((isLeftArmTracker() || isLeftFingerTracker()) && armsResetMode == ArmsResetModes.TPOSE_DOWN)) {
 			EulerAngles(EulerOrder.YZX, 0f, 0f, -FastMath.HALF_PI).toQuaternion()
@@ -290,6 +295,11 @@ class TrackerResetsHandler(val tracker: Tracker) {
 	 * and stores it in mountRotFix, and adjusts yawFix
 	 */
 	fun resetMounting(reference: Quaternion) {
+		if (tracker.trackerDataSupport == TrackerDataSupport.FLEX_RESISTANCE) {
+			tracker.trackerFlexHandler.resetMax()
+			return
+		}
+
 		if (!resetMountingFeet && isFootTracker()) {
 			return
 		}
