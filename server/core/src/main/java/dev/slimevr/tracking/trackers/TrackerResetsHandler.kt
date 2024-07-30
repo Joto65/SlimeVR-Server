@@ -209,6 +209,10 @@ class TrackerResetsHandler(val tracker: Tracker) {
 	fun resetFull(reference: Quaternion) {
 		if (tracker.trackerDataSupport == TrackerDataSupport.FLEX_RESISTANCE) {
 			tracker.trackerFlexHandler.resetMin()
+			postProcessResetFull()
+			return
+		} else if (tracker.trackerDataSupport == TrackerDataSupport.FLEX_ANGLE) {
+			postProcessResetFull()
 			return
 		}
 
@@ -247,6 +251,10 @@ class TrackerResetsHandler(val tracker: Tracker) {
 
 		calculateDrift(oldRot)
 
+		postProcessResetFull()
+	}
+
+	private fun postProcessResetFull() {
 		if (this.tracker.lastResetStatus != 0u) {
 			VRServer.instance.statusSystem.removeStatus(this.tracker.lastResetStatus)
 			this.tracker.lastResetStatus = 0u
@@ -262,6 +270,12 @@ class TrackerResetsHandler(val tracker: Tracker) {
 	 * position should be corrected in the source.
 	 */
 	fun resetYaw(reference: Quaternion) {
+		if (tracker.trackerDataSupport == TrackerDataSupport.FLEX_RESISTANCE ||
+			tracker.trackerDataSupport == TrackerDataSupport.FLEX_ANGLE
+		) {
+			return
+		}
+
 		val oldRot = adjustToReference(tracker.getRawRotation())
 		lastResetQuaternion = oldRot
 
@@ -297,10 +311,11 @@ class TrackerResetsHandler(val tracker: Tracker) {
 	fun resetMounting(reference: Quaternion) {
 		if (tracker.trackerDataSupport == TrackerDataSupport.FLEX_RESISTANCE) {
 			tracker.trackerFlexHandler.resetMax()
+			tracker.resetFilteringQuats()
 			return
-		}
-
-		if (!resetMountingFeet && isFootTracker()) {
+		} else if (tracker.trackerDataSupport == TrackerDataSupport.FLEX_ANGLE) {
+			return
+		} else if (!resetMountingFeet && isFootTracker()) {
 			return
 		}
 
