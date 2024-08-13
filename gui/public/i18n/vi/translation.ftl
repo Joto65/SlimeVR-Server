@@ -571,6 +571,10 @@ settings-osc-vrchat-network-trackers-elbows = Khuỷu tay
 ## VMC OSC settings
 
 settings-osc-vmc = Virtual Motion Capture
+# This cares about multilines
+settings-osc-vmc-description =
+    Thay đổi cài đặt cụ thể cho giao thức VMC (Virtual Motion Capture)
+        để gửi dữ liệu thân của SlimeVR và nhận dữ liệu thân từ các ứng dụng khác.
 settings-osc-vmc-enable = Bật
 settings-osc-vmc-enable-description = Cho phép nhận và gửi dữ liệu OSC
 settings-osc-vmc-enable-label = Chuyển tiếp dữ liệu OSC
@@ -596,6 +600,10 @@ settings-osc-vmc-vrm-model_loaded =
 settings-osc-vmc-vrm-file_select = Kéo và thả mô hình để sử dụng hoặc <u>duyệt file</u>
 settings-osc-vmc-anchor_hip = Cố định ở hông
 settings-osc-vmc-anchor_hip-description = Cố định theo dõi ở hông, hữu ích cho VTubing ngồi. Nếu tắt, hãy tải mô hình VRM.
+settings-osc-vmc-anchor_hip-label = Cố định ở hông
+settings-osc-vmc-mirror_tracking = Phản chiếu ngược theo dõi cơ thể
+settings-osc-vmc-mirror_tracking-description = Phản chiếu theo dõi theo chiều ngang.
+settings-osc-vmc-mirror_tracking-label = Phản chiếu ngược theo dõi cơ thể
 
 ## Setup/onboarding menu
 
@@ -632,6 +640,24 @@ onboarding-reset_tutorial-back = Quay lại cân chỉnh vị trí gắn tracker
 onboarding-reset_tutorial = Làm lại
 onboarding-reset_tutorial-explanation = Trong khi bạn sử dụng trình theo dõi của mình, tracker có thể bị lệch khỏi căn chỉnh do IMU bị trượt, trôi dạt hoặc vì bạn có thể đã di chuyển chúng về mặt vật lý. Bạn có một số cách để khắc phục điều này.
 onboarding-reset_tutorial-skip = Bỏ qua bước
+# Cares about multiline
+onboarding-reset_tutorial-0 =
+    Nhấn { $taps } lần thiết bị được đánh dấu để kích hoạt đặt lại chiều quay.
+    
+    Điều này sẽ làm cho các trình theo dõi quay mặt về cùng hướng với kính thực thế ảo (HMD) của bạn.
+# Cares about multiline
+onboarding-reset_tutorial-1 =
+    Nhấn vào { $taps } lần thiết bị được đánh dấu để kích hoạt đặt lại toàn bộ.
+    
+    Bạn cần phải đứng thẳng tay để làm việc này (i-pose). Có độ trễ 3 giây (có thể định cấu hình) trước khi nó thực sự xảy ra.
+    Điều này đặt lại hoàn toàn vị trí và xoay của tất cả các trình theo dõi của bạn. Nó sẽ khắc phục hầu hết các vấn đề.
+# Cares about multiline
+onboarding-reset_tutorial-2 =
+    Nhấn vào { $taps } lần thiết bị được đánh dấu để kích hoạt đặt lại lắp.
+    
+    Thiết lập lại gắn kết giúp ích cho cách các trình theo dõi thực sự được đặt vào bạn, vì vậy nếu bạn vô tình di chuyển chúng và thay đổi cách chúng được định hướng với số lượng lớn, điều này sẽ hữu ích.
+    
+    Bạn cần phải ở trên một tư thế như bạn đang trượt tuyết như nó được hiển thị trên trình hướng dẫn gắn tự động và bạn có độ trễ 3 giây (có thể định cấu hình) trước khi nó được kích hoạt.
 
 ## Setup start
 
@@ -655,6 +681,8 @@ onboarding-done-close = Đóng hướng dẫn
 
 onboarding-connect_tracker-back = Quay lại cài đặt Wi-Fi
 onboarding-connect_tracker-title = Kết nối tracker
+onboarding-connect_tracker-description-p0-v1 = Bây giờ vào phần thú vị, kết nối thiết bị!
+onboarding-connect_tracker-description-p1-v1 = Kết nối từng thiết bị một lần thông qua cổng USB.
 onboarding-connect_tracker-issue-serial = Có vấn đề với việc kết nối? Kiểm tra thông tin qua cổng Serial
 onboarding-connect_tracker-usb = USB Tracker
 onboarding-connect_tracker-connection_status-none = Đang tìm tracker
@@ -680,10 +708,14 @@ onboarding-connect_tracker-next = Đã kết nối với tất cả tracker
 
 ## Tracker calibration tutorial
 
+onboarding-calibration_tutorial = Hướng dẫn hiệu chuẩn IMU
 onboarding-calibration_tutorial-subtitle = Cái này sẽ giúp giảm trôi trượt theo dõi!
+onboarding-calibration_tutorial-description = Mỗi khi bạn bật thiết bị theo dõi, chúng cần nghỉ ngơi một lúc trên bề mặt phẳng để hiệu chỉnh. Hãy làm điều tương tự bằng cách nhấp vào nút "{ onboarding-calibration_tutorial-calibrate }", <b>và không di chuyển chúng!</b>
 onboarding-calibration_tutorial-calibrate = Tôi đã đặt thiết bị theo dõi của mình lên bàn
 onboarding-calibration_tutorial-status-waiting = Đang chờ bạn hoàn thành
+onboarding-calibration_tutorial-status-calibrating = Đang hiệu chuẩn
 onboarding-calibration_tutorial-status-success = Nice!
+onboarding-calibration_tutorial-status-error = Thiết bị đã di chuyển
 
 ## Tracker assignment tutorial
 
@@ -691,6 +723,8 @@ onboarding-assignment_tutorial = Làm thế nào để chuẩn bị một Slime 
 onboarding-assignment_tutorial-first_step = 1. Đặt nhãn dán bộ phận cơ thể (nếu có) trên tracker theo lựa chọn của bạn
 # This text has a character limit of around 11 characters, so please keep it short
 onboarding-assignment_tutorial-sticker = Sticker
+onboarding-assignment_tutorial-second_step-v2 = 2. Gắn dây đeo vào thiết bị theo dõi của bạn, giữ cho mặt Velcro của dây đeo hướng cùng hướng với hướng thiết bị của trình theo dõi của bạn:
+onboarding-assignment_tutorial-second_step-continuation-v2 = Mặt Velcro cho extension phải hướng lên như hình ảnh sau:
 onboarding-assignment_tutorial-done = Tôi đã dán nhãn dán và dây đai!
 
 ## Tracker assignment setup
@@ -708,6 +742,24 @@ onboarding-assign_trackers-assigned =
     } đã giao
 onboarding-assign_trackers-advanced = Xem thêm vị trí đặt
 onboarding-assign_trackers-next = Hoàn thành
+onboarding-assign_trackers-mirror_view = Xem hình phản chiếu
+onboarding-assign_trackers-option-amount = x{ $trackersCount }
+onboarding-assign_trackers-option-label =
+    { $mode ->
+        [lower-body] Tất cả thiết bị
+        [core] { "" }
+        [enhanced-core] { "" }
+        [full-body] { "" }
+       *[all] { "" }
+    }
+onboarding-assign_trackers-option-description =
+    { $mode ->
+        [lower-body] Tối thiều để có full body tracking
+        [core] + Thân eo
+        [enhanced-core] + Quay bàn chân
+        [full-body] + Khửu tay
+       *[all] Tất cả thiết bị được giao
+    }
 
 ## Tracker assignment warnings
 
