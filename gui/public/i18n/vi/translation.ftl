@@ -439,6 +439,8 @@ settings-general-gesture_control-fullResetTaps = Số lần chạm để đặt 
 settings-general-gesture_control-mountingResetEnabled = Chạm để đặt lại hướng gắn tracker
 settings-general-gesture_control-mountingResetDelay = Thời gian delay trước khi đặt lại hướng gắn tracker
 settings-general-gesture_control-mountingResetTaps = Số lần chạm cho đặt lại hướng gắn tracker
+# The number of trackers that can have higher acceleration before a tap is rejected
+settings-general-gesture_control-numberTrackersOverThreshold = Số thiết bị có thể vượt phát hiện
 settings-general-gesture_control-numberTrackersOverThreshold-description = Tăng số này nếu tính năng chạm thiết bị không hoạt động. Không tăng nó quá trên mức cần thiết để làm cho phát hiện chạm hoạt động vì nó sẽ gây ra nhiều kết quả sai hơn.
 
 ## Appearance settings
@@ -537,10 +539,18 @@ settings-osc-router-network-address-placeholder = Địa chỉ IPv4
 ## OSC VRChat settings
 
 settings-osc-vrchat = VRChat OSC Trackers
+# This cares about multilines
+settings-osc-vrchat-description-v1 =
+    Thay đổi cài đặt cụ thể cho OSC Trackers được sử dụng để gửi
+    dữ liệu đo đến các ứng dụng không có SteamVR (ví dụ: Quest Standalone).
+    Hãy đảm bảo bật OSC trong VRChat thông qua Menu hành động trong OSC > Enabled.
+    Để cho phép nhận kính thực tế ảo HMD và dữ liệu bộ điều khiển từ VRChat, hãy vào menu chính của bạn
+    cài đặt trong Tracking & IK > Allow Sending Head and Wrist VR Tracking OSC Data.
 settings-osc-vrchat-enable = Dữ liệu OSC
 settings-osc-vrchat-enable-description = Cho phép nhận và gửi dữ liệu OSC
 settings-osc-vrchat-enable-label = Giao tiếp dữ liệu OSC
 settings-osc-vrchat-network = Cổng mạng
+settings-osc-vrchat-network-description-v1 = Đặt các cổng để lấy và gửi dữ liệu. Có thể giữ nguyên cho VRChat.
 settings-osc-vrchat-network-port_in =
     .label = Cổng vào
     .placeholder = Cổng vào (Mặc định: 9001)
@@ -548,6 +558,7 @@ settings-osc-vrchat-network-port_out =
     .label = Cổng ra
     .placeholder = Cổng ra (Mặc định: 9000)
 settings-osc-vrchat-network-address = Địa chỉ mạng
+settings-osc-vrchat-network-address-description-v1 = Chọn địa chỉ để gửi dữ liệu đến. Có thể giữ nguyên cho VRChat.
 settings-osc-vrchat-network-address-placeholder = Địa chỉ IP của thiết bị chơi VRChat
 settings-osc-vrchat-network-trackers = Cấu hình Tracker
 settings-osc-vrchat-network-trackers-description = Chọn các tracker mà SlimeVR sẽ gửi dữ liệu OSC đến VRChat
@@ -704,12 +715,8 @@ onboarding-assign_trackers-next = Hoàn thành
 ## Tracker mounting method choose
 
 onboarding-choose_mounting-auto_mounting = Cân chỉnh tự động
-# Italized text
-onboarding-choose_mounting-auto_mounting-label = Thử nghiệm
 onboarding-choose_mounting-auto_mounting-description = Điều này sẽ tự động phát hiện các hướng lắp đặt cho tất cả các thiết bị của bạn từ 2 tư thế
 onboarding-choose_mounting-manual_mounting = Cân chỉnh thủ công
-# Italized text
-onboarding-choose_mounting-manual_mounting-label = Khuyến khích dùng
 onboarding-choose_mounting-manual_modal-confirm = Tôi chắc chắn về những gì tôi đang làm
 onboarding-choose_mounting-manual_modal-cancel = Hủy
 
