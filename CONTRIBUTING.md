@@ -9,6 +9,7 @@ This document describes essential knowledge required to contribute to the SlimeV
 - [Node.js v16.9+](https://nodejs.org) (We recommend the use of `nvm` instead of installing Node.js directly)
 - [Microsoft Edge WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) or `webkit2gtk` for Linux
 - [Rust](https://rustup.rs)
+- [Visual Studio Build Tools C++](https://visualstudio.microsoft.com/de/downloads/?cid=learn-navbar-download-cta) (check "Desktop development with C++" under the Workloads tab in the installer)
 
 ## Cloning the code
 First, clone the codebase using git in a terminal in the folder you want.
@@ -28,7 +29,7 @@ The Java code is built with `gradle`, a CLI tool that manages java projects and 
 dependencies.
 - You can run the server by running `./gradlew run` in your IDE's terminal.
 - To compile the code, run `./gradlew shadowJar`. The result will
-be at `server/build/libs/slimevr.jar` (you can ignore `server.jar`).
+be at `server/desktop/build/libs/slimevr.jar` (you can ignore `server.jar`).
 
 (Note: Your IDE may be able to do all of the above for you.)
 
