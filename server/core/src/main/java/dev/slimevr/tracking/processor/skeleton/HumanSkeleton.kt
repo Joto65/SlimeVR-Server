@@ -2,6 +2,7 @@ package dev.slimevr.tracking.processor.skeleton
 
 import com.jme3.math.FastMath
 import dev.slimevr.VRServer
+import dev.slimevr.substituteInsideOutTracking.SubstituteInsideOutTracking
 import dev.slimevr.tracking.processor.Bone
 import dev.slimevr.tracking.processor.BoneType
 import dev.slimevr.tracking.processor.HumanPoseManager
@@ -146,6 +147,7 @@ class HumanSkeleton(
 	var tapDetectionManager = TapDetectionManager(this)
 	var viveEmulation = ViveEmulation(this)
 	var localizer = Localizer(this)
+	var substituteInsideOutTracking = SubstituteInsideOutTracking(this)
 
 	// Constructors
 	init {
@@ -369,6 +371,7 @@ class HumanSkeleton(
 		legTweaks.tweakLegs()
 		localizer.update()
 		viveEmulation.update()
+		substituteInsideOutTracking.update()
 	}
 
 	/**
@@ -865,6 +868,8 @@ class HumanSkeleton(
 			SkeletonConfigToggles.FOOT_PLANT -> legTweaks.footPlantEnabled = newValue
 
 			SkeletonConfigToggles.SELF_LOCALIZATION -> localizer.setEnabled(newValue)
+
+			SkeletonConfigToggles.SUBSTITUTE_INSIDE_OUT_TRACKING -> substituteInsideOutTracking.setSubstituteInsideOutTrackingEnabled(newValue)
 		}
 	}
 

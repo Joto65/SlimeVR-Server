@@ -66,6 +66,7 @@ interface SettingsForm {
     toeSnap: boolean;
     footPlant: boolean;
     selfLocalization: boolean;
+    substituteInsideOutTracking: boolean;
   };
   ratios: {
     imputeWaistFromChestHip: number;
@@ -125,6 +126,7 @@ const defaultValues: SettingsForm = {
     toeSnap: false,
     footPlant: true,
     selfLocalization: false,
+    substituteInsideOutTracking: false,
   },
   ratios: {
     imputeWaistFromChestHip: 0.3,
@@ -231,6 +233,8 @@ export function GeneralSettings() {
       toggles.toeSnap = values.toggles.toeSnap;
       toggles.footPlant = values.toggles.footPlant;
       toggles.selfLocalization = values.toggles.selfLocalization;
+      toggles.substituteInsideOutTracking =
+        values.toggles.substituteInsideOutTracking;
       modelSettings.toggles = toggles;
     }
 
@@ -255,6 +259,13 @@ export function GeneralSettings() {
       const legTweaks = new LegTweaksSettingsT();
       legTweaks.correctionStrength = values.legTweaks.correctionStrength;
       modelSettings.legTweaks = legTweaks;
+    }
+
+    if (values.toggles.substituteInsideOutTracking) { /** hands warning isn't needed if substitution handles switching between controllers and trackers **/
+      setHandsWarning(false)
+    }
+    else {
+      setHandsWarning(null)
     }
 
     settings.modelSettings = modelSettings;
@@ -1164,7 +1175,7 @@ export function GeneralSettings() {
                     )}
                   </Typography>
                 </div>
-                <div className="grid sm:grid-cols-1 gap3 pb5">
+                <div className="grid sm:grid-cols-1 gap-3 pb-5">
                   <CheckBox
                     variant="toggle"
                     outlined
@@ -1172,6 +1183,29 @@ export function GeneralSettings() {
                     name="toggles.selfLocalization"
                     label={l10n.getString(
                       'settings-general-fk_settings-self_localization-title'
+                    )}
+                  />
+                </div>
+                <div className="flex flex-col pt-2 pb-3">
+                  <Typography bold>
+                    {l10n.getString(
+                      'settings-general-fk_settings-substitute_insideOut_tracking-title'
+                    )}
+                  </Typography>
+                  <Typography color="secondary">
+                    {l10n.getString(
+                      'settings-general-fk_settings-substitute_insideOut_tracking-description'
+                    )}
+                  </Typography>
+                </div>
+                <div className="grid sm:grid-cols-1 gap3 pb5">
+                  <CheckBox
+                    variant="toggle"
+                    outlined
+                    control={control}
+                    name="toggles.substituteInsideOutTracking"
+                    label={l10n.getString(
+                      'settings-general-fk_settings-substitute_insideOut_tracking-label'
                     )}
                   />
                 </div>

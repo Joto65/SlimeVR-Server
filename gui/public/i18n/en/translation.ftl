@@ -389,6 +389,10 @@ settings-general-fk_settings-vive_emulation-title = Vive emulation
 settings-general-fk_settings-vive_emulation-description = Emulate the waist tracker problems that Vive trackers have. This is a joke and makes tracking worse.
 settings-general-fk_settings-vive_emulation-label = Enable Vive emulation
 
+settings-general-fk_settings-substitute_insideOut_tracking-title = Substitution for Inside-Out tracking
+settings-general-fk_settings-substitute_insideOut_tracking-description = Uses trackers assigned to hand position as substitute when Inside-Out tracked hands or controllers are occluded
+settings-general-fk_settings-substitute_insideOut_tracking-label = Enable Inside-Out Substitution
+
 ## Gesture control settings (tracker tapping)
 settings-general-gesture_control = Gesture control
 settings-general-gesture_control-subtitle = Tap based resets

@@ -43,7 +43,7 @@ export function HandsWarningModal({
             elems={{ b: <b></b> }}
           >
             <WarningBox>
-              <b>Warning:</b> Please don't use hands if you have controllers!
+              <b>Warning:</b> Please don't use hands if you have controllers, unless you have inside-out tracking substitution enabled!
             </WarningBox>
           </Localized>
 
