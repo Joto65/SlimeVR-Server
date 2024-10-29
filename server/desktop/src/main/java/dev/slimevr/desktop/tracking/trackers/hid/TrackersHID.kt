@@ -11,6 +11,7 @@ import io.github.axisangles.ktmath.Quaternion
 import io.github.axisangles.ktmath.Quaternion.Companion.fromRotationVector
 import io.github.axisangles.ktmath.Vector3
 import org.hid4java.HidDevice
+import org.hid4java.HidException
 import org.hid4java.HidManager
 import org.hid4java.HidServices
 import org.hid4java.HidServicesListener
@@ -34,22 +35,26 @@ class TrackersHID(name: String, private val trackersConsumer: Consumer<Tracker>)
 	private val devicesBySerial: MutableMap<String, MutableList<Int>> = HashMap()
 	private val devicesByHID: MutableMap<HidDevice, MutableList<Int>> = HashMap()
 	private val hidServicesSpecification = HidServicesSpecification()
-	private val hidServices: HidServices
+	private var hidServices: HidServices? = null
 
 	init {
 		hidServicesSpecification.setAutoStart(false)
-		hidServices = HidManager.getHidServices(hidServicesSpecification)
-		hidServices.addHidServicesListener(this)
-		val dataReadThread = Thread(dataReadRunnable)
-		dataReadThread.isDaemon = true
-		dataReadThread.name = "hid4java data reader"
-		dataReadThread.start()
-		// We use hid4java but actually do not start the service ever, because it will just enumerate everything and cause problems
-		// Do enumeration ourself
-		val deviceEnumerateThread = Thread(deviceEnumerateRunnable)
-		deviceEnumerateThread.isDaemon = true
-		deviceEnumerateThread.name = "hid4java device enumerator"
-		deviceEnumerateThread.start()
+		try {
+			hidServices = HidManager.getHidServices(hidServicesSpecification)
+			hidServices?.addHidServicesListener(this)
+			val dataReadThread = Thread(dataReadRunnable)
+			dataReadThread.isDaemon = true
+			dataReadThread.name = "hid4java data reader"
+			dataReadThread.start()
+			// We use hid4java but actually do not start the service ever, because it will just enumerate everything and cause problems
+			// Do enumeration ourself
+			val deviceEnumerateThread = Thread(deviceEnumerateRunnable)
+			deviceEnumerateThread.isDaemon = true
+			deviceEnumerateThread.name = "hid4java device enumerator"
+			deviceEnumerateThread.start()
+		} catch (e: HidException) {
+			LogManager.severe("Error initializing HID services: ${e.message}", e)
+		}
 	}
 
 	private fun checkConfigureDevice(hidDevice: HidDevice) {
@@ -186,6 +191,7 @@ class TrackersHID(name: String, private val trackersConsumer: Consumer<Tracker>)
 	private fun dataRead() {
 		synchronized(devicesByHID) {
 			var devicesPresent = false
+			var devicesDataReceived = false
 			val q = intArrayOf(0, 0, 0, 0)
 			val a = intArrayOf(0, 0, 0)
 			for ((hidDevice, deviceList) in devicesByHID) {
@@ -202,6 +208,7 @@ class TrackersHID(name: String, private val trackersConsumer: Consumer<Tracker>)
 						LogManager.info("[TrackerServer] Malformed HID packet, ignoring")
 						continue // Don't continue with this data
 					}
+					devicesDataReceived = true // Data is received and is valid (not malformed)
 					val packetCount = dataReceived.size / 20
 					var i = 0
 					while (i < packetCount * 20) {
@@ -261,6 +268,8 @@ class TrackersHID(name: String, private val trackersConsumer: Consumer<Tracker>)
 			}
 			if (!devicesPresent) {
 				sleep(10) // No hid device, "empty loop" so sleep to save the poor cpu
+			} else if (!devicesDataReceived) {
+				sleep(1) // read has no timeout, no data also causes an "empty loop"
 			}
 		}
 	}
